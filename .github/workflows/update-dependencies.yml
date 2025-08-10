@@ -1,0 +1,66 @@
+name: Update Dependencies
+
+on:
+  #schedule:
+  #  # Run daily at 2:00 AM UTC
+  #  - cron: '0 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  id-token: write
+
+jobs:
+  update-dependencies:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Update Dependencies and Create PR
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          timeout_minutes: "30"
+          custom_instructions: |
+            You are tasked with updating all dependencies in this Node.js project and creating a pull request with the changes.
+            
+            Please perform the following steps:
+            
+            1. First, analyze the current package.json to understand the project's dependencies
+            
+            2. Update all dependencies to their latest versions using npm-check-updates
+            
+            3. Install the updated dependencies to generate a new package-lock.json
+            
+            4. Run the test suite to check for any breaking changes
+            
+            5. Create a new branch named "update-dependencies-YYYYMMDD" (use today's date)
+            
+            6. Commit the changes with a descriptive commit message
+            
+            7. Push the branch and create a pull request
+            
+            8. In the PR description, provide:
+               - A summary of all dependency updates
+               - Any breaking changes detected and how to address them
+               - Security implications (vulnerabilities fixed or introduced)
+               - Test results and any failures
+               - Migration steps for breaking changes
+               - Recommendations for additional testing
+            
+            Focus especially on:
+            - Identifying breaking changes between major versions
+            - Security vulnerabilities that are addressed
+            - Dependencies that might have compatibility issues
+            - Any deprecated features being used that need updates
+            
+            The PR should have:
+            - Title: "chore: automated dependency updates [DATE]"
+            - Labels: "dependencies", "automated"
+            - A comprehensive description that helps reviewers understand all changes

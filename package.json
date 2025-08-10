@@ -4,8 +4,7 @@
   "description": "An app with many outdated dependencies",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "test": "mocha"
+    "start": "node app.js"
   },
   "author": "",
   "license": "MIT",

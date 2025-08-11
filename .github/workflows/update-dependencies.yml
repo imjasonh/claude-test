@@ -28,7 +28,8 @@ jobs:
           mode: agent
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           timeout_minutes: "30"
-          custom_instructions: |
+          allowed_tools: "Bash(*),Read,Write,Edit,MultiEdit,Glob,Grep,WebSearch"
+          direct_prompt: |
             You are tasked with updating all dependencies in this Node.js project and creating a pull request with the changes.
             
             Please perform the following steps:
